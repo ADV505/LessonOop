@@ -8,6 +8,7 @@ namespace LessonOop
         {
             Labirynth.Start();
 
+
         }
 
     }
