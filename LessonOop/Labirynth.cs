@@ -17,8 +17,8 @@ namespace LessonOop
                 {1, 1, 1, 1, 1, 1, 1 },
                 {1, 0, 0, 0, 0, 0, 1 },
                 {1, 0, 1, 1, 1, 0, 1 },
-                {0, 0, 0, 0, 1, 0, 0 },
-                {1, 1, 0, 0, 0, 0, 1 },
+                {1, 0, 0, 0, 1, 0, 0 },
+                {1, 1, 0, 0, 0, 0, 0 },
                 {1, 1, 1, 0, 1, 0, 1 },
                 {1, 1, 1, 0, 1, 1, 1 }
                         };
@@ -50,7 +50,6 @@ namespace LessonOop
                     continue;
                 if (lab.GetLength(0) - 1 == current.Item1 || lab.GetLength(1) - 1 == current.Item2 || current.Item1 == 0 || current.Item2 == 0)
                 {
-
                     CountExit++;
                     continue;
                 }
