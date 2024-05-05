@@ -9,15 +9,15 @@ namespace LessonOop
 
         static void Main(string[] args)
         {
-            byte b = 5;
-            long l = 10;
-            int i = -4;
+            //byte b = 5;
+            //long l = 10;
+            //int i = -4;
 
-            Bits b1 = (Bits)b; //явное
+            //Bits b1 = (Bits)b; //явное
 
-            Bits bits = b; //неявное
-            Bits bits1 = l;
-            Bits bits2 = i;
+            //Bits bits = b; //неявное
+            //Bits bits1 = l;
+            //Bits bits2 = i;
 
 
             //Labirynth.Start();
@@ -86,26 +86,26 @@ namespace LessonOop
             //Lesson7-----------------------------------------------------end
 
             //Lesson8-----------------------------------------------------start
-            //string path = "D:\\Projekt\\Lection";
-            //string fileFormat = "*.txt";
-            //string findText = "Hello";
+            string path = "D:\\Projekt\\Lection";
+            string fileMaskFormat = "*.txt";
+            string findText = "Hello";
 
-            //string[] allFiles = Lesson8.FindFile(path, fileFormat);
+            string[] allFiles = Lesson8.FindFile(path, fileMaskFormat);
 
-            //if (allFiles != null)
-            //{
-            //    string[] file = Lesson8.ReaderFile(allFiles, findText);
-            //    if (file != null)
-            //    {
-            //        foreach (string n in file)
-            //        {
-            //            Console.WriteLine($"Найден файл {n}");
-            //        }
-            //    }
-                    
-            //}
-            //else
-            //    Console.WriteLine($"Нет файла с таким содержанием");
+            if (allFiles.Length != 0)
+            {
+                List<string> file = Lesson8.ReaderFile(allFiles, findText);
+
+                if (file.Count > 0)
+                {
+                    foreach (string n in file)
+                    {
+                        Console.WriteLine($"Найден файл - {n} (который содержит искомое слово ({findText}))");
+                    }
+                }
+            }
+            else
+                Console.WriteLine($"Файлы с таким расширением ({fileMaskFormat}) не обнаруженны!");
 
             //Lesson8-----------------------------------------------------end
         }
