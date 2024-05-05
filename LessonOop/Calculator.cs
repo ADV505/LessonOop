@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LessonOop
+﻿namespace LessonOop
 {
     class CalculatorEventArgs : EventArgs
     {
@@ -46,6 +40,9 @@ namespace LessonOop
             result /= value;
             StartEvent();
         }
+
+       
+
         public void Cancel()
         {
             if (results.Count > 0)
