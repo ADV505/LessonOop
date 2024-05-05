@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
 using System.Text;
 
 namespace LessonOop
@@ -8,6 +9,17 @@ namespace LessonOop
 
         static void Main(string[] args)
         {
+            byte b = 5;
+            long l = 10;
+            int i = -4;
+
+            Bits b1 = (Bits)b; //явное
+
+            Bits bits = b; //неявное
+            Bits bits1 = l;
+            Bits bits2 = i;
+
+
             //Labirynth.Start();
             //Lesson4-----------------------------------------------------------start
 
@@ -32,7 +44,7 @@ namespace LessonOop
 
             //    key = Console.ReadKey();
 
-            //    if(key.Key == ConsoleKey.Escape)
+            //    if (key.Key == ConsoleKey.Escape)
             //        return;
 
             //    string? str = Console.ReadLine();
@@ -40,7 +52,7 @@ namespace LessonOop
             //        return;
             //    double.TryParse(str, out input);
 
-            //    switch(key.Key)
+            //    switch (key.Key)
             //    {
             //        case ConsoleKey.OemPlus:
             //            calculator.Add(input);
@@ -63,16 +75,39 @@ namespace LessonOop
 
 
 
-            //Lesson7-----------------------------------------------------start
-            Lesson7 ls7 = new Lesson7(1, "hi", 2.0m, '$');
-            string str = ObjectToString(ls7);
-            Console.WriteLine(str);
+            //Lesson-----------------------------------------------------start
+            //Lesson7 ls7 = new Lesson7(1, "hi", 2.0m, '$');
+            //string str = ObjectToString(ls7);
+            //Console.WriteLine(str);
 
-            var obj = StringToObject(str);
+            //var obj = StringToObject(str);
 
-            Console.WriteLine(ObjectToString(obj));
+            //Console.WriteLine(ObjectToString(obj));
             //Lesson7-----------------------------------------------------end
 
+            //Lesson8-----------------------------------------------------start
+            //string path = "D:\\Projekt\\Lection";
+            //string fileFormat = "*.txt";
+            //string findText = "Hello";
+
+            //string[] allFiles = Lesson8.FindFile(path, fileFormat);
+
+            //if (allFiles != null)
+            //{
+            //    string[] file = Lesson8.ReaderFile(allFiles, findText);
+            //    if (file != null)
+            //    {
+            //        foreach (string n in file)
+            //        {
+            //            Console.WriteLine($"Найден файл {n}");
+            //        }
+            //    }
+                    
+            //}
+            //else
+            //    Console.WriteLine($"Нет файла с таким содержанием");
+
+            //Lesson8-----------------------------------------------------end
         }
 
         public static void PrintConsole(string str)
