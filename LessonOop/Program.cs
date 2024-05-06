@@ -90,22 +90,28 @@ namespace LessonOop
             string fileMaskFormat = "*.txt";
             string findText = "Hello";
 
-            string[] allFiles = Lesson8.FindFile(path, fileMaskFormat);
+            Lesson9 l9 = new(path, fileMaskFormat, findText);
 
-            if (allFiles.Length != 0)
-            {
-                List<string> file = Lesson8.ReaderFile(allFiles, findText);
+            new Thread(Lesson9.FindFile).Start(l9);
 
-                if (file.Count > 0)
-                {
-                    foreach (string n in file)
-                    {
-                        Console.WriteLine($"Найден файл - {n} (который содержит искомое слово ({findText}))");
-                    }
-                }
-            }
-            else
-                Console.WriteLine($"Файлы с таким расширением ({fileMaskFormat}) не обнаруженны!");
+            Console.ReadKey();
+
+            //string[] allFiles = Lesson8.FindFile(path, fileMaskFormat);
+
+            //if (allFiles.Length != 0)
+            //{
+            //    List<string> file = Lesson8.ReaderFile(allFiles, findText);
+
+            //    if (file.Count > 0)
+            //    {
+            //        foreach (string n in file)
+            //        {
+            //            Console.WriteLine($"Найден файл - {n} (который содержит искомое слово ({findText}))");
+            //        }
+            //    }
+            //}
+            //else
+            //    Console.WriteLine($"Файлы с таким расширением ({fileMaskFormat}) не обнаруженны!");
 
             //Lesson8-----------------------------------------------------end
         }
