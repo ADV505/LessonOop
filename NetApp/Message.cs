@@ -14,6 +14,8 @@ namespace NetApp
         public DateTime DateTime { get; set; }
         public string NicknameFrom { get; set; }
         public string NicknameTo { get; set; }
+
+
         
 
         public string SerializeMessegeToJson() => JsonSerializer.Serialize(this);

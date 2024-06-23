@@ -6,42 +6,48 @@ namespace NetApp
 {
     internal class Program
     {
-        static void Main(string[] args)
+        private static UdpClient udpClient = new UdpClient(12345);
+        private static IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, 0);
+        private static CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
+        private static CancellationToken token = cancelTokenSource.Token;
+        static async Task Main(string[] args)
         {
+            Console.WriteLine("Сервер ждет сообщение от клиента...");
 
-            Server();
+            await Task.Run(ReceiveMessageAsync, token);
+            
         }
 
-        public static void Server()
+        private static async Task SendMessageAsync(string notice, bool status = true)
         {
-            UdpClient udpClient = new UdpClient(12345);
-            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            MessageServer messageServer = new MessageServer() { Text = notice, Status = status};
+            var answer = Encoding.UTF8.GetBytes(messageServer.SerializeMessegeToJson());
+            await udpClient.SendAsync(answer, answer.Length, iPEndPoint);
+        }
 
-            Console.WriteLine("Сервер ждет сообщение от клиента...");
+        static async Task ReceiveMessageAsync()
+        {
 
             while (true)
             {
-                byte[] buffer = udpClient.Receive(ref iPEndPoint);
-                var messageText = Encoding.UTF8.GetString(buffer);
-
-                ThreadPool.QueueUserWorkItem(obj =>
+                if (token.IsCancellationRequested)
                 {
-                    Message message = Message.DeserializeFromJson(messageText);
-                    message.Print();
-                    if (message.Text.ToString().ToLower() == "exit")
-                    {
-                        byte[] answer = Encoding.UTF8.GetBytes("Сервер ушел в аут");
-                        udpClient.Send(answer,answer.Length,iPEndPoint);
+                    Console.WriteLine("Сервер не доступен");
+                    return;
+                }
+                var receiver = await udpClient.ReceiveAsync();
+                iPEndPoint = (IPEndPoint)receiver.RemoteEndPoint;
+                var messageText = Encoding.UTF8.GetString(receiver.Buffer);
+                Message message = Message.DeserializeFromJson(messageText);
+                message.Print();
 
-                        Environment.Exit(0);
-                    }
-                    else
-                    {
-                        byte[] answer = Encoding.UTF8.GetBytes("Сообщение доставлено");
-                        udpClient.Send(answer, answer.Length, iPEndPoint);
-                    }
+                if (message.Text == "exit")
+                {
+                    cancelTokenSource.Cancel();
+                    await SendMessageAsync("Сервер не доступен", false);
+                }
 
-                });
+                await SendMessageAsync("Сообщение доставлено");
             }
         }
     }
