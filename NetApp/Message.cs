@@ -7,13 +7,19 @@ using System.Threading.Tasks;
 
 namespace NetApp
 {
-  
+    public enum Commands
+    {
+        Register,
+        Delete
+    }
+
     public class Message
     {
         public string Text { get; set; }
         public DateTime DateTime { get; set; }
         public string NicknameFrom { get; set; }
         public string NicknameTo { get; set; }
+        public Commands command {get;set;}
 
 
         
