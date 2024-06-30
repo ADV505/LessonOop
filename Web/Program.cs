@@ -1,3 +1,11 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Web.Abstraction;
+using Web.Mapper;
+using Web.Repository;
+using Web.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 
 namespace Web
 {
@@ -13,6 +21,15 @@ namespace Web
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddAutoMapper(typeof(MapperProfile));
+            builder.Services.AddMemoryCache(x => x.TrackStatistics = true);
+            builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+            builder.Host.ConfigureContainer<ContainerBuilder>(container =>
+            {
+                container.RegisterType<ProductRepository>().As<IProductRepository>();
+                container.RegisterType<ProductGroupRepository>().As<IProductGroupRepository>();
+                container.Register(_ => new AppContex(builder.Configuration.GetConnectionString("db"))).InstancePerDependency();
+            });
 
             var app = builder.Build();
 
@@ -22,6 +39,16 @@ namespace Web
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            var staticFilePath = Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles");
+            Directory.CreateDirectory(staticFilePath);
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(staticFilePath),
+                RequestPath = "/cache"
+
+            });
 
             app.UseHttpsRedirection();
 

@@ -1,7 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Text;
+using System.IO;
+using Web.Abstraction;
 using Web.Data;
+using Web.Dto;
 using Web.Models;
+using Web.OutTypeFile;
 
 namespace Web.Controllers
 {
@@ -9,45 +14,54 @@ namespace Web.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-        [HttpPost]
-        public ActionResult<int> AddProduct(string name, string description, decimal price)
-        {
-            using (AppContex appContex = new AppContex())
-            {
-                if (appContex.Products.Any(p => p.Name == name))
-                    return StatusCode(409);
+        private readonly IProductRepository _productRepository;
 
-                var product = new Product() { Name = name, Description = description, Price = price };
-                appContex.Products.Add(product);
-                appContex.SaveChanges();
-                return Ok(product.Id);
-            }
+        public ProductController(IProductRepository productRepository)
+        {
+            _productRepository = productRepository;
         }
 
-        [HttpGet("all")]
-        public ActionResult<IEnumerable<Product>> GetProducts()
+        [HttpPost]
+        public ActionResult<int> AddProduct(ProductDto productDto)
         {
-            using (AppContex appContex = new AppContex())
+            try
             {
-                var list = appContex.Products.Select(p => new Product { Id = p.Id, Name = p.Name, Description = p.Description, Price = p.Price }).ToList();
-                return Ok(list);
-                
+                var id = _productRepository.AddProduct(productDto);
+                return Ok(id);
             }
+            catch (Exception ex)
+            {
+                return StatusCode(409);
+            }
+
+
+        }
+        [HttpGet("get_all_products")]
+        public ActionResult<IEnumerable<Product>> GetAllProducts()
+        {
+            return Ok(_productRepository.GetAllProducts());
         }
 
         [HttpDelete]
         public ActionResult DeleteProduct(int id)
         {
-            using (AppContex appContex = new AppContex())
-            {
-                Product? product = appContex.Products.FirstOrDefault(p => p.Id == id);
-                if (product == null)
-                    return StatusCode(409);
-                appContex.Products.Remove(product);
-                appContex.SaveChanges();
-                return Ok();
-            }
-            
+            return Ok(_productRepository.DeleteProduct(id));
         }
+
+        [HttpGet(template: "GetProductCsv")]
+        public FileContentResult GetProductCsv()
+        {
+            return File(_productRepository.GetProductCsv(), "txt/csv", "report.csv");
+        }
+
+        [HttpGet(template: "GetCacheUrl")]
+        public ActionResult<string> GetCacheCsv()
+        {
+            var filename = _productRepository.GetCacheUrl();
+            return "https://" + Request.Host.ToString()+ "/cache/" + filename;
+        }
+
     }
 }
+  
+

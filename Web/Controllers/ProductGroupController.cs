@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using Web.Abstraction;
 using Web.Data;
+using Web.Dto;
 using Web.Models;
+using Web.Repository;
 
 namespace Web.Controllers
 {
@@ -8,46 +12,44 @@ namespace Web.Controllers
     [Route("[controller]")]
     public class ProductGroupController : ControllerBase
     {
-        [HttpPost]
-        public ActionResult<int> AddProductGroup(string name, string description)
-        {
-            using (AppContex appContex = new AppContex())
-            {
-                if (appContex.ProductGroups.Any(p => p.Name == name))
-                    return StatusCode(409);
+        private readonly IProductGroupRepository _productGroupRepository;
 
-                var product = new Product() { Name = name, Description = description };
-                appContex.Products.Add(product);
-                appContex.SaveChanges();
-                return Ok(product.Id);
+        public ProductGroupController(IProductGroupRepository productGroupRepository)
+        {
+            _productGroupRepository = productGroupRepository;
+        }
+
+        [HttpPost]
+        public ActionResult<int> AddProductGroup(ProductGroupDto productGroupDto)
+        {
+            try
+            {
+                var id = _productGroupRepository.AddProductGroup(productGroupDto);
+                return Ok(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(409);
             }
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<ProductGroup>> GetProductGroups()
+        [HttpGet("get_all_products")]
+        public ActionResult<IEnumerable<Product>> GetAllProductGroups()
         {
-            using (AppContex appContex = new AppContex())
-            {
-                var list = appContex.ProductGroups.Select(p => new Product { Id = p.Id, Name = p.Name, Description = p.Description}).ToList();
-                return Ok(list);
-
-            }
+            return Ok(_productGroupRepository.GetAllProductGroups());
         }
 
         [HttpDelete]
-        public ActionResult DeleteProduct(int id)
+        public ActionResult DeleteProductGroup(int id)
         {
-            using (AppContex appContex = new AppContex())
-            {
-                ProductGroup? productGroup = appContex.ProductGroups.FirstOrDefault(p => p.Id == id);
-                if (productGroup == null)
-                    return StatusCode(409);
-                appContex.ProductGroups.Remove(productGroup);
-                appContex.SaveChanges();
-                return Ok();
-            }
-
+            return Ok(_productGroupRepository.DeleteProductGroup(id));
         }
 
+        [HttpGet(template: "GetProductCsv")]
+        public FileContentResult GetProductCsv()
+        {
+            return File(_productGroupRepository.GetProductCsv(), "txt/csv", "report.csv");
+
+        }
     }
 }
