@@ -1,0 +1,6 @@
+@WebLessonDocker_HostAddress = http://localhost:5032
+
+GET {{WebLessonDocker_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebGraph", "WebGraph\WebGraph.csproj", "{1B2B96F9-94EA-4C32-A60F-A0B1A477A25B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLessonDocker", "WebLessonDocker\WebLessonDocker.csproj", "{56F6C2C7-F71E-4579-8013-C115F687194D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{1B2B96F9-94EA-4C32-A60F-A0B1A477A25B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B2B96F9-94EA-4C32-A60F-A0B1A477A25B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B2B96F9-94EA-4C32-A60F-A0B1A477A25B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56F6C2C7-F71E-4579-8013-C115F687194D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56F6C2C7-F71E-4579-8013-C115F687194D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56F6C2C7-F71E-4579-8013-C115F687194D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56F6C2C7-F71E-4579-8013-C115F687194D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{947F94FD-25A1-4655-B2AE-E5A1E742862D} = {66941995-C60D-4E55-9556-F361C7B4722F}
 		{F2F25F4E-DAEF-4E5A-962F-DFDAD7F47BEB} = {414BA0DA-A80A-4FED-8D4A-E59040738EA2}
 		{1B2B96F9-94EA-4C32-A60F-A0B1A477A25B} = {414BA0DA-A80A-4FED-8D4A-E59040738EA2}
+		{56F6C2C7-F71E-4579-8013-C115F687194D} = {414BA0DA-A80A-4FED-8D4A-E59040738EA2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {129B0CFA-F81B-4B3C-9C66-8D357DB7B84B}
